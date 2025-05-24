@@ -37,8 +37,9 @@ int bpf_sockops_handler(struct bpf_sock_ops *skops){
 
         case BPF_SOCK_OPS_HDR_OPT_LEN_CB: {
             //bpf_printk("enter opt len cv\n");
-            rv = sizeof(struct toaData);
-            bpf_reserve_hdr_opt(skops, sizeof(struct toaData),0);
+            // rv = sizeof(struct toaData);
+	    rv = 40;
+            bpf_reserve_hdr_opt(skops, rv, 0);
             break;
         }
         case BPF_SOCK_OPS_WRITE_HDR_OPT_CB: {
@@ -54,6 +55,20 @@ int bpf_sockops_handler(struct bpf_sock_ops *skops){
             if (ret!=0){
                 bpf_printk("error");
             }
+	    __u8 nops[32] = {
+        0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x01,
+        };
+	    ret = bpf_store_hdr_opt(skops, &nops, sizeof(nops), 0);
+	    if (ret < 0) {
+		bpf_printk("W: insert NOPs failed");
+       	    }
             break;
         }
 
