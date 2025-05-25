@@ -60,6 +60,13 @@ Usage of ./main:
 go build -o main &&./main  -ip 1.2.3.4 -port 39123
 ```
 
+debug:
+
+```bash
+bpftool prog list
+tcpdump -i any 'tcp port 443 and tcp[tcpflags]  != 0' -nn
+```
+
 
 
 wireshark抓包证明修改成功。

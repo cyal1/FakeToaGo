@@ -1,4 +1,4 @@
-module test
+module FakeToaGo
 
 go 1.24.2
 
