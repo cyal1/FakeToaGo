@@ -27,10 +27,7 @@ int bpf_sockops_handler(struct bpf_sock_ops *skops){
     s32 rv = -1;
 
     switch (op) {
-        case BPF_SOCK_OPS_TCP_CONNECT_CB:{
-	    bpf_sock_ops_cb_flags_set(skops, skops->bpf_sock_ops_cb_flags | BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG);
-	    break;
-	}
+        case BPF_SOCK_OPS_TCP_CONNECT_CB:
         case BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB:
         case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB: {
             //bpf_printk("enter connect cb\n");
@@ -48,7 +45,6 @@ int bpf_sockops_handler(struct bpf_sock_ops *skops){
         case BPF_SOCK_OPS_WRITE_HDR_OPT_CB: {
             //bpf_printk("enter write hdr opt\n");
             //bpf_printk("ip:%d",bpf_htons(ip));
-	    //https://mp.weixin.qq.com/s/B4y3JV6_Jb0ew9u1vVGE4g
             struct toaData fakeToa1 = {
                     .opcode = opcode,
                     .opsize = 0x08,
